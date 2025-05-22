@@ -5,11 +5,14 @@
  */
 package admin;
 
+import config.Session;
 import config.connectDB;
 import java.awt.Color;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -83,8 +86,16 @@ public class sales extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         id = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        print = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
@@ -138,6 +149,9 @@ public class sales extends javax.swing.JFrame {
 
         sales.setBackground(new java.awt.Color(51, 51, 51));
         sales.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                salesMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 salesMouseEntered(evt);
             }
@@ -241,6 +255,30 @@ public class sales extends javax.swing.JFrame {
         jLabel13.setText("Current ID:");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 90, -1));
 
+        print.setBackground(new java.awt.Color(51, 51, 51));
+        print.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                printMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                printMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                printMouseExited(evt);
+            }
+        });
+        print.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Print");
+        print.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, -1, 30));
+
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-print-50.png"))); // NOI18N
+        print.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
+
+        jPanel2.add(print, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 210, 50));
+
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, -1, 460));
 
         pack();
@@ -288,36 +326,76 @@ public class sales extends javax.swing.JFrame {
     }//GEN-LAST:event_profileMouseClicked
 
     private void foodMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodMouseClicked
-         int rowIndex = salesTable.getSelectedRow();
+       int rowIndex = salesTable.getSelectedRow();
 
-    if (rowIndex < 0) {
-        JOptionPane.showMessageDialog(null, "Please Select An Item!");
-    } else {
-        addUser a = new addUser();
-        try {
-      connectDB cdb = new connectDB();
+if (rowIndex < 0) {
+    JOptionPane.showMessageDialog(null, "Please select a sales record first!");
+} else {
+    addSale salesForm = new addSale();
+    try {
+        connectDB cdb = new connectDB();
         TableModel tbl = salesTable.getModel();
         
-        String userId = tbl.getValueAt(rowIndex, 0).toString();
+        String saleId = tbl.getValueAt(rowIndex, 0).toString();
+
+        String query = "SELECT * FROM sales WHERE s_id = ?";
+        PreparedStatement pstmt = cdb.getConnection().prepareStatement(query);
+        pstmt.setString(1, saleId);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            salesForm.sid.setText(rs.getString("s_id"));
+            salesForm.uid.setText(rs.getString("u_id"));
+            salesForm.fid.setText(rs.getString("f_id"));
+            salesForm.foodname.setText(rs.getString("foodname"));
+            salesForm.price.setText(rs.getString("price"));
+            salesForm.payment.setSelectedItem(rs.getString("payment"));
+            salesForm.status.setSelectedItem(rs.getString("status"));
+
+            salesForm.add.setEnabled(false);
+            salesForm.update.setEnabled(true);
+            salesForm.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Sales data not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    
+    }//GEN-LAST:event_foodMouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+       Session sess = Session.getInstance();
+       id.setText(""+sess.getId());
+    }//GEN-LAST:event_formWindowActivated
+
+    private void printMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseClicked
+        int rowIndex = salesTable.getSelectedRow();
+
+if (rowIndex < 0) {
+    JOptionPane.showMessageDialog(null, "Please Select An Item!");
+} else {
+    receipt a = new receipt();
+    try {
+        connectDB cdb = new connectDB();
+        TableModel tbl = salesTable.getModel();
         
-        ResultSet rs = cdb.getData("SELECT * FROM sales WHERE s_id = '" + userId + "'");
+        String iid = tbl.getValueAt(rowIndex, 0).toString();
+        
+        ResultSet rs = cdb.getData("SELECT * FROM sales WHERE s_id = '" + iid + "'");
         
         if (rs.next()) {
-            a.uid.setText(rs.getString("u_id")); 
-            a.firstname.setText(rs.getString("firstname"));
-            a.lastname.setText(rs.getString("lastname"));
-            a.username.setText(rs.getString("username"));
-            a.email.setText(rs.getString("email"));
-            a.password.setText(rs.getString("password"));
-            
-            String userStatus = rs.getString("status");
-            String userType = rs.getString("usertype");
-            
-            a.status.setSelectedItem(userStatus != null ? userStatus : ""); 
-            a.usertype.setSelectedItem(userType != null ? userType : "");
-
-            a.add.setEnabled(false);
-            a.update.setEnabled(true);
+            a.sid.setText(rs.getString("s_id")); 
+            a.uid.setText(rs.getString("u_id"));
+            a.fid.setText(rs.getString("f_id"));          
+            a.foodname.setText(rs.getString("foodname"));
+            a.price.setText(rs.getString("price"));
+            a.status.setText(rs.getString("status"));
+            a.payment.setText(rs.getString("payment"));
             a.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "User data not found!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -328,8 +406,51 @@ public class sales extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
-    
-    }//GEN-LAST:event_foodMouseClicked
+    }//GEN-LAST:event_printMouseClicked
+
+    private void printMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseEntered
+       print.setBackground(new Color(51, 51, 51));
+    }//GEN-LAST:event_printMouseEntered
+
+    private void printMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_printMouseExited
+       print.setBackground(new Color (153, 153 ,255));
+    }//GEN-LAST:event_printMouseExited
+
+    private void salesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salesMouseClicked
+        int rowIndex = salesTable.getSelectedRow();
+
+if (rowIndex < 0) {
+    JOptionPane.showMessageDialog(null, "Please Select An Item!");
+} else {
+    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this item?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        connectDB cdb = new connectDB();
+        try {
+            TableModel tbl = salesTable.getModel();
+            String userId = tbl.getValueAt(rowIndex, 0).toString();
+
+            // ✅ Delete the item from the database
+            int rowsDeleted = cdb.updateData("DELETE FROM sales WHERE s_id = ?", userId);
+
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(null, "Item deleted successfully!");
+                
+                // Refresh the table to show the updated data
+                ((DefaultTableModel) salesTable.getModel()).removeRow(rowIndex);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to delete item! Item ID not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            cdb.closeConnection();
+        }
+    }
+}      
+    }//GEN-LAST:event_salesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -373,11 +494,13 @@ public class sales extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -385,6 +508,7 @@ public class sales extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel print;
     private javax.swing.JPanel profile;
     private javax.swing.JPanel sales;
     private javax.swing.JTable salesTable;

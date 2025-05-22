@@ -8,6 +8,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowActivated" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowActivated"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -93,24 +96,28 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="117" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="status" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <Component id="firstname" max="32767" attributes="0"/>
-                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                          <Component id="lastname" max="32767" attributes="0"/>
-                          <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
-                          <Component id="email" max="32767" attributes="0"/>
-                          <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
-                          <Component id="usertype" max="32767" attributes="0"/>
-                          <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                          <Component id="username" max="32767" attributes="0"/>
-                          <Component id="uid" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                      <Component id="jLabel19" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="status" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <Component id="uid" max="32767" attributes="0"/>
+                              <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                              <Component id="fid" max="32767" attributes="0"/>
+                              <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                              <Component id="foodname" max="32767" attributes="0"/>
+                              <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                              <Component id="payment" max="32767" attributes="0"/>
+                              <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                              <Component id="price" max="32767" attributes="0"/>
+                              <Component id="sid" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="113" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -120,38 +127,41 @@
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="uid" min="-2" pref="35" max="-2" attributes="0"/>
+                  <Component id="sid" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                  <Component id="firstname" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="uid" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                  <Component id="lastname" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="fid" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                  <Component id="email" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="foodname" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                   <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                  <Component id="usertype" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="payment" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                   <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                  <Component id="username" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="price" min="-2" pref="30" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
                   <Component id="status" min="-2" pref="30" max="-2" attributes="0"/>
-                  <EmptySpace pref="78" max="32767" attributes="0"/>
+                  <EmptySpace pref="76" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JTextField" name="lastname">
+        <Component class="javax.swing.JTextField" name="fid">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="12" style="0"/>
@@ -172,7 +182,7 @@
             <Property name="text" type="java.lang.String" value="Food ID:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="firstname">
+        <Component class="javax.swing.JTextField" name="uid">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="12" style="0"/>
@@ -205,7 +215,7 @@
             <Property name="text" type="java.lang.String" value="Food Name:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="email">
+        <Component class="javax.swing.JTextField" name="foodname">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="12" style="0"/>
@@ -226,7 +236,7 @@
             <Property name="text" type="java.lang.String" value="Payment:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="usertype">
+        <Component class="javax.swing.JComboBox" name="payment">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="12" style="0"/>
@@ -254,7 +264,7 @@
             <Property name="text" type="java.lang.String" value="Price:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="username">
+        <Component class="javax.swing.JTextField" name="price">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Verdana" size="12" style="0"/>
@@ -292,7 +302,7 @@
             <Property name="text" type="java.lang.String" value="Status:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="uid">
+        <Component class="javax.swing.JTextField" name="sid">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -310,6 +320,16 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Sales ID:"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel17">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/icons8-add-button-32.png"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel17MouseEntered"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -357,7 +377,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Delete User"/>
+                <Property name="text" type="java.lang.String" value="Delete Sales"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -429,7 +449,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Add User"/>
+                <Property name="text" type="java.lang.String" value="Add Sales"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -471,7 +491,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Edit User"/>
+                <Property name="text" type="java.lang.String" value="Edit Sales"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

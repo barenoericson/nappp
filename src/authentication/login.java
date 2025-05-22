@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import users.usersDashboard;
+import users.userDashboard;
 
 /**
  *
@@ -36,17 +36,21 @@ public class login extends javax.swing.JFrame {
 public static boolean loginnAcc(String username, String password) throws NoSuchAlgorithmException {
     connectDB connector = new connectDB();
     try {
-        String query = "SELECT u_id, firstname, lastname, username, email, usertype, status, password FROM users WHERE username = ?";
+        String query = "SELECT * FROM users WHERE username = ?";
         PreparedStatement pstmt = connector.getConnection().prepareStatement(query);
-        pstmt.setString(1, username); // Only set username
+        pstmt.setString(1, username);
         ResultSet resultSet = pstmt.executeQuery();
 
         if (resultSet.next()) {
-            String hashedPass = resultSet.getString("password"); // Get stored hashed password
-            String rehashedPass = PasswordHasher.hashPassword(password); // Hash the entered password
+            String hashedPass = resultSet.getString("password");
+            String rehashedPass = PasswordHasher.hashPassword(password);
 
             if (hashedPass.equals(rehashedPass)) {
                 status = resultSet.getString("status");
+                if (!"Active".equalsIgnoreCase(status)) {
+                    JOptionPane.showMessageDialog(null, "IN-ACTIVE ACCOUNT, CONTACT THE ADMIN");
+                    return false;
+                }
 
                 Session sess = Session.getInstance();
                 sess.setId(resultSet.getString("u_id"));
@@ -57,7 +61,7 @@ public static boolean loginnAcc(String username, String password) throws NoSuchA
                 sess.setUsertype(resultSet.getString("usertype"));
                 sess.setStatus(status);
 
-                return true; // Login successful
+                return true;
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid password. Please try again.");
                 return false;
@@ -70,9 +74,10 @@ public static boolean loginnAcc(String username, String password) throws NoSuchA
         ex.printStackTrace();
         return false;
     } finally {
-        connector.closeConnection(); 
+        connector.closeConnection();
     }
 }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -201,7 +206,7 @@ public static boolean loginnAcc(String username, String password) throws NoSuchA
                     ad.setVisible(true);
                     this.dispose();
                 } else if (userType.equalsIgnoreCase("User")) {
-                    usersDashboard rc = new usersDashboard();
+                    userDashboard rc = new userDashboard();
                     rc.setVisible(true);
                     this.dispose();
                 } else {

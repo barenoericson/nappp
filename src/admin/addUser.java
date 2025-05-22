@@ -210,6 +210,9 @@ public class addUser extends javax.swing.JFrame {
 
         sales.setBackground(new java.awt.Color(51, 51, 51));
         sales.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                salesMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 salesMouseEntered(evt);
             }
@@ -472,6 +475,10 @@ public class addUser extends javax.swing.JFrame {
     }
 }
     }//GEN-LAST:event_updateMouseClicked
+
+    private void salesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salesMouseClicked
+       
+    }//GEN-LAST:event_salesMouseClicked
 
     /**
      * @param args the command line arguments

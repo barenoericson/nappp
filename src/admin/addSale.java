@@ -7,8 +7,11 @@ package admin;
 
 import authentication.login;
 import config.PasswordHasher;
+import config.Session;
 import config.connectDB;
 import java.awt.Color;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -39,20 +42,21 @@ public class addSale extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        lastname = new javax.swing.JTextField();
+        fid = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        firstname = new javax.swing.JTextField();
+        uid = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        email = new javax.swing.JTextField();
+        foodname = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        usertype = new javax.swing.JComboBox<>();
+        payment = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
+        price = new javax.swing.JTextField();
         status = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
-        uid = new javax.swing.JTextField();
+        sid = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         sales = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -70,6 +74,11 @@ public class addSale extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
@@ -89,14 +98,14 @@ public class addSale extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
 
-        lastname.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        fid.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Food ID:");
 
-        firstname.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        firstname.setEnabled(false);
+        uid.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        uid.setEnabled(false);
 
         jLabel6.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -106,20 +115,20 @@ public class addSale extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Food Name:");
 
-        email.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        foodname.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         jLabel15.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Payment:");
 
-        usertype.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        usertype.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gcash", "Cash On Counter" }));
+        payment.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        payment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gcash", "Cash On Counter" }));
 
         jLabel16.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Price:");
 
-        username.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        price.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         status.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Order Served", "Order Pending" }));
@@ -128,11 +137,18 @@ public class addSale extends javax.swing.JFrame {
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Status:");
 
-        uid.setEnabled(false);
+        sid.setEnabled(false);
 
         jLabel19.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Sales ID:");
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-add-button-32.png"))); // NOI18N
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel17MouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,21 +158,24 @@ public class addSale extends javax.swing.JFrame {
                 .addContainerGap(117, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel18)
-                        .addComponent(status, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
-                        .addComponent(firstname)
-                        .addComponent(jLabel12)
-                        .addComponent(lastname)
-                        .addComponent(jLabel14)
-                        .addComponent(email)
-                        .addComponent(jLabel15)
-                        .addComponent(usertype, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel16)
-                        .addComponent(username)
-                        .addComponent(uid, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(113, 113, 113))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel18)
+                            .addComponent(status, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6)
+                            .addComponent(uid)
+                            .addComponent(jLabel12)
+                            .addComponent(fid)
+                            .addComponent(jLabel14)
+                            .addComponent(foodname)
+                            .addComponent(jLabel15)
+                            .addComponent(payment, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel16)
+                            .addComponent(price)
+                            .addComponent(sid, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel17)))
+                .addGap(77, 77, 77))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,32 +183,34 @@ public class addSale extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(uid, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(sid, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addGap(4, 4, 4)
-                .addComponent(firstname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(uid, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel12)
                 .addGap(4, 4, 4)
-                .addComponent(lastname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fid, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel14)
                 .addGap(4, 4, 4)
-                .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(foodname, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jLabel15)
                 .addGap(4, 4, 4)
-                .addComponent(usertype, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(payment, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jLabel16)
                 .addGap(4, 4, 4)
-                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel18)
                 .addGap(4, 4, 4)
                 .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, 480, 520));
@@ -210,7 +231,7 @@ public class addSale extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Delete User");
+        jLabel4.setText("Delete Sales");
         sales.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, 30));
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-delete-user-male-50.png"))); // NOI18N
@@ -239,7 +260,7 @@ public class addSale extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Add User");
+        jLabel7.setText("Add Sales");
         add.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, 30));
 
         jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 210, 60));
@@ -260,7 +281,7 @@ public class addSale extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Edit User");
+        jLabel3.setText("Edit Sales");
         update.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, 30));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-edit-profile-32.png"))); // NOI18N
@@ -317,64 +338,45 @@ public class addSale extends javax.swing.JFrame {
     }//GEN-LAST:event_salesMouseExited
 
     private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
-           String First_name = firstname.getText().trim();
-    String Last_name = lastname.getText().trim();
-    String Email = email.getText().trim().toLowerCase();
-    String User_type = usertype.getSelectedItem().toString().trim();
-    String user_name = username.getText().trim();
-    String Password = password.getText().trim();
-    String Status = status.getSelectedItem().toString().trim();
+    Session sess = Session.getInstance();
+    String userId = sess.getId();
+    String foodId = fid.getText().trim();
+    String foodName = foodname.getText().trim();
+    String priceValue = price.getText().trim();
+    String paymentMethod = payment.getSelectedItem().toString();
+    String saleStatus = status.getSelectedItem().toString();
 
-    connectDB connect = new connectDB();
-
-    if (First_name.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please enter your First Name!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (Last_name.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please enter your Last Name!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (Email.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please enter an Email!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (!Email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-        JOptionPane.showMessageDialog(null, "Please enter a valid Email Address!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (User_type.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please select a User Type!", "Error", JOptionPane.WARNING_MESSAGE);
-    }else if(Status.isEmpty()){
-        JOptionPane.showMessageDialog(null, "Please enter a Status!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (user_name.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please enter a Username!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (Password.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Please enter a Password!", "Error", JOptionPane.WARNING_MESSAGE);
-    } else if (Password.length() < 8) {
-        JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!", "Error", JOptionPane.WARNING_MESSAGE);
+    if (foodId.isEmpty() || foodName.isEmpty() || priceValue.isEmpty() || paymentMethod.isEmpty() || saleStatus.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.WARNING_MESSAGE);
     } else {
-     try {
-        if (connect.fieldExists("users", "username", user_name)) {
-            JOptionPane.showMessageDialog(null, "Username already taken!", "Error", JOptionPane.WARNING_MESSAGE);
-        } else if (connect.fieldExists("users", "email", Email)) {
-            JOptionPane.showMessageDialog(null, "Email already used!", "Error", JOptionPane.WARNING_MESSAGE);
+        connectDB connect = new connectDB();
+
+        try {
+        String sql = "INSERT INTO sales (u_id, f_id, foodname, price, payment, status) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = connect.getConnection().prepareStatement(sql);
+        pstmt.setString(1, userId);    
+        pstmt.setString(2, foodId);
+        pstmt.setString(3, foodName);
+        pstmt.setString(4, priceValue);
+        pstmt.setString(5, paymentMethod);
+        pstmt.setString(6, saleStatus);
+
+        int rowsInserted = pstmt.executeUpdate();
+
+        if (rowsInserted > 0) {
+            JOptionPane.showMessageDialog(null, "Sale record added successfully!");
+            new sales().setVisible(true);this.dispose();
         } else {
-            String hashedPassword = PasswordHasher.hashPassword(Password);
-
-            String sql = "INSERT INTO users (firstname, lastname, username, email, usertype, password, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            int rowsInserted = connect.insertData(sql, First_name, Last_name, user_name, Email, User_type, hashedPassword, Status);
-
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(null, "Add User Successfully!");
-
-                new login().setVisible(true);
-
-                JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(username);
-                if (frame != null) {
-                    frame.dispose();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Added User failed!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, "Failed to add sale record.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (Exception e) {
+    } catch (SQLException e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        connect.closeConnection();
     }
 }
+
     }//GEN-LAST:event_addMouseClicked
 
     private void addMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseEntered
@@ -406,53 +408,42 @@ public class addSale extends javax.swing.JFrame {
     }//GEN-LAST:event_profileMouseClicked
 
     private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
-          if (firstname.getText().isEmpty() || lastname.getText().isEmpty() || username.getText().isEmpty() || 
-    email.getText().isEmpty() || usertype.getSelectedItem() == null || password.getText().isEmpty() || 
-    status.getSelectedItem() == null || uid.getText().isEmpty()) {
+     if (uid.getText().isEmpty() || fid.getText().isEmpty() || price.getText().isEmpty() ||
+    foodname.getText().isEmpty() || payment.getSelectedItem() == null ||
+    status.getSelectedItem() == null || sid.getText().isEmpty()) {
 
     JOptionPane.showMessageDialog(null, "All Fields Are Required!");
-
-} else if (password.getText().length() < 8) {
-    JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!");
-    password.setText("");
 
 } else {
     connectDB cdb = new connectDB();
     try {
-        int userId;
+        int saleId;
         try {
-            userId = Integer.parseInt(uid.getText());
+            saleId = Integer.parseInt(sid.getText().trim());
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Invalid User ID!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid Sales ID!", "Validation Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        boolean usernameExists = cdb.duplicateCheckExcludingCurrent("users", "username", username.getText(), "u_id", String.valueOf(userId));
-        boolean emailExists = cdb.duplicateCheckExcludingCurrent("users", "email", email.getText(), "u_id", String.valueOf(userId));
+        int rowsUpdated = cdb.updateData(
+            "UPDATE sales SET u_id = ?, f_id = ?, foodname = ?, price = ?, payment = ?, status = ? WHERE s_id = ?",
+            uid.getText().trim(),
+            fid.getText().trim(),
+            foodname.getText().trim(),
+            price.getText().trim(),
+            payment.getSelectedItem().toString(),
+            status.getSelectedItem().toString(),
+            saleId
+        );
 
-        if (usernameExists || emailExists) {
-            JOptionPane.showMessageDialog(null, "Username or Email already exists for another user!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        if (rowsUpdated > 0) {
+            JOptionPane.showMessageDialog(null, "Sales record updated successfully!");
+            this.dispose();  
+            new sales().setVisible(true);
         } else {
-            int rowsUpdated = cdb.updateData(
-                "UPDATE users SET firstname = ?, lastname = ?, username = ?, email = ?, usertype = ?, password = ?, status = ? WHERE u_id = ?",
-                firstname.getText(),
-                lastname.getText(),
-                username.getText(),
-                email.getText(),
-                usertype.getSelectedItem().toString(),
-                password.getText(),
-                status.getSelectedItem().toString(),
-                userId
-            );
-
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(null, "Account updated successfully!");
-                this.dispose();  
-                new user().setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Update failed! User ID not found.", "Update Error", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(null, "Update failed! Sale ID not found.", "Update Error", JOptionPane.ERROR_MESSAGE);
         }
+
     } catch (Exception ex) {
         ex.printStackTrace();
         JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -460,7 +451,18 @@ public class addSale extends javax.swing.JFrame {
         cdb.closeConnection();
     }
 }
+
     }//GEN-LAST:event_updateMouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        Session sess = Session.getInstance();
+        
+        id.setText(""+sess.getId());
+    }//GEN-LAST:event_formWindowActivated
+
+    private void jLabel17MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseEntered
+       new selectSales().setVisible(true); this.dispose();
+    }//GEN-LAST:event_jLabel17MouseEntered
 
     /**
      * @param args the command line arguments
@@ -500,8 +502,8 @@ public class addSale extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JPanel add;
-    public javax.swing.JTextField email;
-    public javax.swing.JTextField firstname;
+    public javax.swing.JTextField fid;
+    public javax.swing.JTextField foodname;
     private javax.swing.JLabel id;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -511,6 +513,7 @@ public class addSale extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -524,13 +527,13 @@ public class addSale extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    public javax.swing.JTextField lastname;
+    public javax.swing.JComboBox<String> payment;
+    public javax.swing.JTextField price;
     private javax.swing.JPanel profile;
     private javax.swing.JPanel sales;
+    public javax.swing.JTextField sid;
     public javax.swing.JComboBox<String> status;
     public javax.swing.JTextField uid;
     public javax.swing.JPanel update;
-    public javax.swing.JTextField username;
-    public javax.swing.JComboBox<String> usertype;
     // End of variables declaration//GEN-END:variables
 }
